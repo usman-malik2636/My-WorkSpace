@@ -1,94 +1,238 @@
-const $ = id => document.getElementById(id);
+// ---------------------------
+// Devil's Workspace Dashboard JS
+// ---------------------------
 
-function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
-function load(k,d){return JSON.parse(localStorage.getItem(k))||d}
+// ======== DOM ELEMENTS ========
+const dateEl = document.getElementById("date");
+const timeEl = document.getElementById("time");
 
-function updateTime(){
-  const d=new Date();
-  $("date").textContent=d.toLocaleDateString();
-  $("time").textContent=d.toLocaleTimeString();
-  $("month").textContent=d.toLocaleString("default",{month:"long"});
-  $("year").textContent=d.getFullYear();
+// To-Do
+const todoInput = document.getElementById("todo-input");
+const todoAddBtn = document.getElementById("todo-add");
+const todoListEl = document.getElementById("todo-list");
+
+// Habits
+const habitInput = document.getElementById("habit-input");
+const habitAddBtn = document.getElementById("habit-add");
+const habitListEl = document.getElementById("habit-list");
+
+// Study Tracker
+const studyAddBtn = document.getElementById("study-add");
+const studyCountEl = document.getElementById("study-count");
+
+// Screen Time Tracker
+const screenAddBtn = document.getElementById("screen-add");
+const screenCountEl = document.getElementById("screen-count");
+
+// Goals
+const monthlyInput = document.getElementById("monthly-input");
+const monthlyAddBtn = document.getElementById("monthly-add");
+const monthlyListEl = document.getElementById("monthly-list");
+
+const yearlyInput = document.getElementById("yearly-input");
+const yearlyAddBtn = document.getElementById("yearly-add");
+const yearlyListEl = document.getElementById("yearly-list");
+
+// Exams
+const examInput = document.getElementById("exam-input");
+const examAddBtn = document.getElementById("exam-add");
+const examListEl = document.getElementById("exam-list");
+
+// ======== INITIALIZATION ========
+
+let todos = JSON.parse(localStorage.getItem("todos")) || [];
+let habits = JSON.parse(localStorage.getItem("habits")) || [];
+let studyHours = parseInt(localStorage.getItem("studyHours")) || 0;
+let screenHours = parseInt(localStorage.getItem("screenHours")) || 0;
+let monthlyGoals = JSON.parse(localStorage.getItem("monthlyGoals")) || [];
+let yearlyGoals = JSON.parse(localStorage.getItem("yearlyGoals")) || [];
+let exams = JSON.parse(localStorage.getItem("exams")) || [];
+
+// ======== UTILITY FUNCTIONS ========
+
+// Format date
+function updateDateTime() {
+  const now = new Date();
+  const date = now.toLocaleDateString("en-GB");
+  const time = now.toLocaleTimeString("en-GB");
+  dateEl.textContent = date;
+  timeEl.textContent = time;
 }
-setInterval(updateTime,1000);
-updateTime();
+setInterval(updateDateTime, 1000);
+updateDateTime();
 
-/* TODO */
-let todos=load("todos",[]);
-function renderTodos(){
-  $("todoList").innerHTML="";
-  todos.forEach((t,i)=>{
-    const li=document.createElement("li");
-    li.textContent=t;
-    li.onclick=()=>{todos.splice(i,1);save("todos",todos);renderTodos()}
-    $("todoList").appendChild(li);
+// Save all data
+function saveData() {
+  localStorage.setItem("todos", JSON.stringify(todos));
+  localStorage.setItem("habits", JSON.stringify(habits));
+  localStorage.setItem("studyHours", studyHours);
+  localStorage.setItem("screenHours", screenHours);
+  localStorage.setItem("monthlyGoals", JSON.stringify(monthlyGoals));
+  localStorage.setItem("yearlyGoals", JSON.stringify(yearlyGoals));
+  localStorage.setItem("exams", JSON.stringify(exams));
+}
+
+// ======== RENDER FUNCTIONS ========
+
+function renderTodos() {
+  todoListEl.innerHTML = "";
+  todos.forEach((item, index) => {
+    const li = document.createElement("li");
+    li.textContent = item;
+    li.classList.add("dashboard-item");
+    li.addEventListener("click", () => {
+      todos.splice(index, 1);
+      saveData();
+      renderTodos();
+    });
+    todoListEl.appendChild(li);
   });
 }
-function addTodo(){
-  todos.push($("todoInput").value);
-  $("todoInput").value="";
-  save("todos",todos);
-  renderTodos();
+
+function renderHabits() {
+  habitListEl.innerHTML = "";
+  habits.forEach((item, index) => {
+    const li = document.createElement("li");
+    li.textContent = item;
+    li.classList.add("dashboard-item");
+    li.addEventListener("click", () => {
+      habits.splice(index, 1);
+      saveData();
+      renderHabits();
+    });
+    habitListEl.appendChild(li);
+  });
 }
+
+function renderStudy() {
+  studyCountEl.textContent = `${studyHours} / 24 hrs`;
+}
+
+function renderScreen() {
+  screenCountEl.textContent = `${screenHours} / 24 hrs`;
+}
+
+function renderMonthlyGoals() {
+  monthlyListEl.innerHTML = "";
+  monthlyGoals.forEach((item, index) => {
+    const li = document.createElement("li");
+    li.textContent = item;
+    li.classList.add("dashboard-item");
+    li.addEventListener("click", () => {
+      monthlyGoals.splice(index, 1);
+      saveData();
+      renderMonthlyGoals();
+    });
+    monthlyListEl.appendChild(li);
+  });
+}
+
+function renderYearlyGoals() {
+  yearlyListEl.innerHTML = "";
+  yearlyGoals.forEach((item, index) => {
+    const li = document.createElement("li");
+    li.textContent = item;
+    li.classList.add("dashboard-item");
+    li.addEventListener("click", () => {
+      yearlyGoals.splice(index, 1);
+      saveData();
+      renderYearlyGoals();
+    });
+    yearlyListEl.appendChild(li);
+  });
+}
+
+function renderExams() {
+  examListEl.innerHTML = "";
+  exams.forEach((item, index) => {
+    const li = document.createElement("li");
+    li.textContent = item;
+    li.classList.add("dashboard-item");
+    li.addEventListener("click", () => {
+      exams.splice(index, 1);
+      saveData();
+      renderExams();
+    });
+    examListEl.appendChild(li);
+  });
+}
+
+// ======== EVENT LISTENERS ========
+
+// To-Do
+todoAddBtn.addEventListener("click", () => {
+  const value = todoInput.value.trim();
+  if (value) {
+    todos.push(value);
+    todoInput.value = "";
+    saveData();
+    renderTodos();
+  }
+});
+
+// Habits
+habitAddBtn.addEventListener("click", () => {
+  const value = habitInput.value.trim();
+  if (value) {
+    habits.push(value);
+    habitInput.value = "";
+    saveData();
+    renderHabits();
+  }
+});
+
+// Study Hours
+studyAddBtn.addEventListener("click", () => {
+  if (studyHours < 24) studyHours++;
+  saveData();
+  renderStudy();
+});
+
+// Screen Hours
+screenAddBtn.addEventListener("click", () => {
+  if (screenHours < 24) screenHours++;
+  saveData();
+  renderScreen();
+});
+
+// Monthly Goals
+monthlyAddBtn.addEventListener("click", () => {
+  const value = monthlyInput.value.trim();
+  if (value) {
+    monthlyGoals.push(value);
+    monthlyInput.value = "";
+    saveData();
+    renderMonthlyGoals();
+  }
+});
+
+// Yearly Goals
+yearlyAddBtn.addEventListener("click", () => {
+  const value = yearlyInput.value.trim();
+  if (value) {
+    yearlyGoals.push(value);
+    yearlyInput.value = "";
+    saveData();
+    renderYearlyGoals();
+  }
+});
+
+// Exams
+examAddBtn.addEventListener("click", () => {
+  const value = examInput.value.trim();
+  if (value) {
+    exams.push(value);
+    examInput.value = "";
+    saveData();
+    renderExams();
+  }
+});
+
+// ======== INITIAL RENDER ========
 renderTodos();
-
-/* HABITS */
-let habits=load("habits",[]);
-function renderHabits(){
-  $("habitList").innerHTML="";
-  habits.forEach((h,i)=>{
-    const li=document.createElement("li");
-    li.innerHTML=`<input type="checkbox">${h}`;
-    $("habitList").appendChild(li);
-  });
-}
-function addHabit(){
-  habits.push($("habitInput").value);
-  $("habitInput").value="";
-  save("habits",habits);
-  renderHabits();
-}
 renderHabits();
-
-/* STUDY */
-let study=load("study",0);
-function addStudy(h){
-  study=Math.min(24,study+h);
-  save("study",study);
-  $("studyText").textContent=`${study} / 24 hrs`;
-  $("studyProgress").textContent=`${study}/24`;
-}
-addStudy(0);
-
-/* SCREEN */
-let screen=load("screen",0);
-function addScreen(h){
-  screen=Math.min(24,screen+h);
-  save("screen",screen);
-  $("screenText").textContent=`${screen} / 24 hrs`;
-  $("screenProgress").textContent=`${screen}/24`;
-}
-addScreen(0);
-
-/* GOALS */
-let monthly=load("monthly",[]);
-let yearly=load("yearly",[]);
-function renderGoals(){
-  $("monthlyGoals").innerHTML=monthly.map(g=>`<li>${g}</li>`).join("");
-  $("yearlyGoals").innerHTML=yearly.map(g=>`<li>${g}</li>`).join("");
-}
-function addMonthly(){monthly.push($("monthlyInput").value);save("monthly",monthly);renderGoals()}
-function addYearly(){yearly.push($("yearlyInput").value);save("yearly",yearly);renderGoals()}
-renderGoals();
-
-/* EXAMS */
-let exams=load("exams",[]);
-function addExam(){
-  exams.push({n:$("examName").value,d:$("examDate").value});
-  save("exams",exams);
-  renderExams();
-}
-function renderExams(){
-  $("examList").innerHTML=exams.map(e=>`<li>${e.n} - ${e.d}</li>`).join("");
-}
+renderStudy();
+renderScreen();
+renderMonthlyGoals();
+renderYearlyGoals();
 renderExams();

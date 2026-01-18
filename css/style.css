@@ -1,146 +1,210 @@
-/* ===============================
-   GLOBAL RESET
-================================ */
+/* =========================
+   DEVIL'S WORKSPACE — DASHBOARD CSS
+   Ultra-Minimal + Feature-Heavy Colors
+   ========================= */
+
+:root {
+  --bg-main: radial-gradient(circle at top, #121225, #05050a 70%);
+  --card-bg: rgba(255, 255, 255, 0.04);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --accent: #8b7bff;
+  --accent-soft: rgba(139, 123, 255, 0.25);
+  --text-main: #eaeaf0;
+  --text-muted: #9a9ab0;
+  --success: #5dffb2;
+}
+
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
-  font-family: 'Inter', system-ui, sans-serif;
 }
 
 body {
-  background: radial-gradient(circle at top, #141420, #09090f 70%);
-  color: #eaeaf0;
-  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: var(--bg-main);
+  color: var(--text-main);
+  font-family: "Inter", system-ui, sans-serif;
 }
 
-/* ===============================
-   HEADER
-================================ */
+/* =========================
+   HEADER / HUD
+   ========================= */
+
 .header {
-  padding: 24px 20px;
+  padding: 24px 20px 18px;
+  text-align: left;
 }
 
 .header h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #9a8cff;
+  font-size: 2.2rem;
+  margin: 0;
+  color: var(--accent);
+  letter-spacing: 0.5px;
 }
 
 .header p {
-  color: #a0a0b8;
+  margin: 6px 0 10px;
+  color: var(--text-muted);
   font-size: 0.95rem;
-  margin-top: 4px;
 }
 
 .date-time {
-  margin-top: 10px;
-  color: #8b8ba8;
   font-size: 0.85rem;
+  color: var(--text-muted);
 }
 
-/* ===============================
-   NAVIGATION
-================================ */
-nav {
-  display: flex;
-  gap: 18px;
-  padding: 12px 20px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-}
+/* =========================
+   DASHBOARD GRID
+   ========================= */
 
-nav a {
-  text-decoration: none;
-  color: #b4b4d6;
-  font-size: 0.9rem;
-  position: relative;
-}
-
-nav a:hover {
-  color: #9a8cff;
-}
-
-/* ===============================
-   MAIN LAYOUT
-================================ */
 main {
-  padding: 20px;
+  padding: 16px;
   display: grid;
-  gap: 20px;
+  grid-template-columns: 1fr;
+  gap: 18px;
 }
 
-/* ===============================
+/* =========================
    CARD SYSTEM
-================================ */
-.section {
-  background: rgba(255,255,255,0.03);
-  border-radius: 16px;
+   ========================= */
+
+section {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
   padding: 18px;
-  border: 1px solid rgba(255,255,255,0.05);
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
 }
 
-.section h2 {
-  font-size: 1.2rem;
-  margin-bottom: 14px;
+section h2 {
+  margin: 0 0 14px;
+  font-size: 1.25rem;
+  letter-spacing: 0.3px;
 }
 
-/* ===============================
+/* =========================
    INPUTS & BUTTONS
-================================ */
-input, select {
+   ========================= */
+
+input,
+select {
   width: 100%;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
-  color: #fff;
-  padding: 12px;
-  border-radius: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--card-border);
+  color: var(--text-main);
   outline: none;
+  font-size: 0.95rem;
+}
+
+input::placeholder {
+  color: var(--text-muted);
 }
 
 button {
-  background: linear-gradient(135deg, #7f73ff, #9a8cff);
+  margin-top: 10px;
+  padding: 12px 20px;
+  border-radius: 14px;
+  background: var(--accent);
   border: none;
   color: #fff;
-  padding: 12px 18px;
-  border-radius: 14px;
-  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
   cursor: pointer;
-  transition: transform 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 button:hover {
-  transform: scale(1.05);
+  transform: translateY(-1px);
+  box-shadow: 0 0 20px var(--accent-soft);
 }
 
-/* ===============================
-   ROWS
-================================ */
-.row {
-  display: flex;
-  gap: 12px;
-}
-
-/* ===============================
+/* =========================
    STUDY & SCREEN TRACKERS
-================================ */
-.counter {
+   ========================= */
+
+.tracker-value {
+  font-size: 1.4rem;
+  margin-top: 6px;
+}
+
+.progress-bar {
+  margin-top: 10px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--success));
+  transition: width 0.3s ease;
+}
+
+/* =========================
+   LIST ITEMS
+   ========================= */
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+li {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+/* =========================
+   NAVIGATION TABS
+   ========================= */
+
+.nav {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 20px 0;
+  font-size: 0.9rem;
 }
 
-.counter span {
-  font-size: 0.85rem;
-  color: #b8b8d8;
+.nav a {
+  color: var(--text-muted);
+  text-decoration: none;
 }
 
-/* ===============================
+.nav a.active {
+  color: var(--accent);
+}
+
+/* =========================
    FOOTER
-================================ */
+   ========================= */
+
 footer {
+  margin: 40px 0 20px;
   text-align: center;
-  padding: 20px;
+  color: var(--text-muted);
   font-size: 0.75rem;
-  color: #777792;
+  opacity: 0.8;
+}
+
+/* =========================
+   DESKTOP ENHANCEMENTS
+   ========================= */
+
+@media (min-width: 900px) {
+  main {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  section.full {
+    grid-column: span 2;
+  }
 }

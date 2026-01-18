@@ -1,104 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Devil's Workspace</title>
-
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#7b3fe4">
-
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Devil's Workspace</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
 
-<header class="header">
-  <h1 contenteditable="true" id="username">Devil’s Workspace</h1>
-  <p class="subtitle">Ultra-minimal cyber productivity dashboard</p>
+  <!-- HEADER / HUD -->
+  <header class="header">
+    <h1 contenteditable="true" id="username">Devil’s Workspace</h1>
+    <p>Ultra-minimal cyber productivity dashboard</p>
+    <div class="date-time">
+      <span id="date"></span> &nbsp; <span id="time"></span>
+    </div>
+  </header>
 
-  <div class="date-time">
-    <span id="date"></span>
-    <span id="time"></span>
-  </div>
-</header>
+  <!-- NAVIGATION -->
+  <nav class="nav">
+    <a href="#overview">Overview</a>
+    <a href="#tasks">To-Do</a>
+    <a href="#habits">Habits</a>
+    <a href="#trackers">Trackers</a>
+    <a href="#goals">Goals</a>
+    <a href="#exams">Exams</a>
+  </nav>
 
-<nav class="nav">
-  <a href="#todo">To-Do</a>
-  <a href="#habits">Habits</a>
-  <a href="#study">Study</a>
-  <a href="#screen">Screen</a>
-  <a href="#goals">Goals</a>
-  <a href="#exams">Exams</a>
-</nav>
+  <!-- DASHBOARD -->
+  <main>
 
-<section class="stats">
-  <div class="circle" id="habitProgress">0%</div>
-  <div class="circle" id="studyProgress">0/24</div>
-  <div class="circle" id="screenProgress">0/24</div>
-</section>
+    <!-- OVERVIEW -->
+    <section id="overview" class="full">
+      <h2>Today Overview</h2>
+      <p>Habits: <strong id="habitPercent">0%</strong></p>
+      <p>Study: <strong id="studyValue">0 / 24 hrs</strong></p>
+      <p>Screen: <strong id="screenValue">0 / 24 hrs</strong></p>
+    </section>
 
-<section id="todo" class="card">
-  <h2>To-Do List</h2>
-  <input id="todoInput" placeholder="Add task…" />
-  <button onclick="addTodo()">Add</button>
-  <ul id="todoList"></ul>
-</section>
+    <!-- TO DO -->
+    <section id="tasks">
+      <h2>To-Do List</h2>
+      <input type="text" id="todoInput" placeholder="Add task..." />
+      <button onclick="addTodo()">Add</button>
+      <ul id="todoList"></ul>
+    </section>
 
-<section id="habits" class="card">
-  <h2>Daily Habits</h2>
-  <input id="habitInput" placeholder="Add habit…" />
-  <button onclick="addHabit()">Add</button>
-  <ul id="habitList"></ul>
-  <canvas id="habitChart"></canvas>
-</section>
+    <!-- HABITS -->
+    <section id="habits">
+      <h2>Daily Habits</h2>
+      <input type="text" id="habitInput" placeholder="Add habit..." />
+      <button onclick="addHabit()">Add</button>
+      <ul id="habitList"></ul>
+    </section>
 
-<section id="study" class="card">
-  <h2>Study Tracker</h2>
-  <button onclick="addStudy(1)">+1 Hour</button>
-  <div id="studyText">0 / 24 hrs</div>
-  <canvas id="studyChart"></canvas>
-</section>
+    <!-- TRACKERS -->
+    <section id="trackers">
+      <h2>Study Tracker</h2>
+      <button onclick="addStudy()">+1 Hour</button>
+      <div class="tracker-value" id="studyCount">0 / 24 hrs</div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="studyBar"></div>
+      </div>
+    </section>
 
-<section id="screen" class="card">
-  <h2>Screen Time</h2>
-  <button onclick="addScreen(1)">+1 Hour</button>
-  <div id="screenText">0 / 24 hrs</div>
-  <canvas id="screenChart"></canvas>
-</section>
+    <section>
+      <h2>Screen Time</h2>
+      <button onclick="addScreen()">+1 Hour</button>
+      <div class="tracker-value" id="screenCount">0 / 24 hrs</div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="screenBar"></div>
+      </div>
+    </section>
 
-<section id="goals" class="card">
-  <h2>Monthly Goals (<span id="month"></span>)</h2>
-  <input id="monthlyInput" placeholder="Add goal…" />
-  <button onclick="addMonthly()">Add</button>
-  <ul id="monthlyGoals"></ul>
+    <!-- GOALS -->
+    <section id="goals">
+      <h2>Monthly Goals (<span id="currentMonth"></span>)</h2>
+      <input type="text" id="monthlyGoalInput" placeholder="Add goal..." />
+      <button onclick="addMonthlyGoal()">Add</button>
+      <ul id="monthlyGoals"></ul>
+    </section>
 
-  <h2>Yearly Goals (<span id="year"></span>)</h2>
-  <input id="yearlyInput" placeholder="Add goal…" />
-  <button onclick="addYearly()">Add</button>
-  <ul id="yearlyGoals"></ul>
-</section>
+    <section>
+      <h2>Yearly Goals (<span id="currentYear"></span>)</h2>
+      <input type="text" id="yearlyGoalInput" placeholder="Add goal..." />
+      <button onclick="addYearlyGoal()">Add</button>
+      <ul id="yearlyGoals"></ul>
+    </section>
 
-<section id="exams" class="card">
-  <h2>Upcoming Exams</h2>
-  <input id="examName" placeholder="Exam name">
-  <input id="examDate" type="date">
-  <button onclick="addExam()">Add</button>
-  <div id="countdown"></div>
-  <ul id="examList"></ul>
-</section>
+    <!-- EXAMS -->
+    <section id="exams" class="full">
+      <h2>Upcoming Exams</h2>
+      <input type="text" id="examName" placeholder="Exam name" />
+      <input type="date" id="examDate" />
+      <button onclick="addExam()">Add</button>
+      <ul id="examList"></ul>
+    </section>
 
-<footer>
-  Designed by Mohd. Usman Malik
-</footer>
+  </main>
 
-<script src="js/app.js"></script>
+  <!-- FOOTER -->
+  <footer>
+    Designed by Mohd. Usman Malik
+  </footer>
 
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
-}
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>

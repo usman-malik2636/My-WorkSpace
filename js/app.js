@@ -1,238 +1,198 @@
-// ---------------------------
-// Devil's Workspace Dashboard JS
-// ---------------------------
+// ===============================
+// Devil's Workspace — FINAL DASHBOARD LOGIC
+// ===============================
 
-// ======== DOM ELEMENTS ========
-const dateEl = document.getElementById("date");
-const timeEl = document.getElementById("time");
-
-// To-Do
-const todoInput = document.getElementById("todo-input");
-const todoAddBtn = document.getElementById("todo-add");
-const todoListEl = document.getElementById("todo-list");
-
-// Habits
-const habitInput = document.getElementById("habit-input");
-const habitAddBtn = document.getElementById("habit-add");
-const habitListEl = document.getElementById("habit-list");
-
-// Study Tracker
-const studyAddBtn = document.getElementById("study-add");
-const studyCountEl = document.getElementById("study-count");
-
-// Screen Time Tracker
-const screenAddBtn = document.getElementById("screen-add");
-const screenCountEl = document.getElementById("screen-count");
-
-// Goals
-const monthlyInput = document.getElementById("monthly-input");
-const monthlyAddBtn = document.getElementById("monthly-add");
-const monthlyListEl = document.getElementById("monthly-list");
-
-const yearlyInput = document.getElementById("yearly-input");
-const yearlyAddBtn = document.getElementById("yearly-add");
-const yearlyListEl = document.getElementById("yearly-list");
-
-// Exams
-const examInput = document.getElementById("exam-input");
-const examAddBtn = document.getElementById("exam-add");
-const examListEl = document.getElementById("exam-list");
-
-// ======== INITIALIZATION ========
-
-let todos = JSON.parse(localStorage.getItem("todos")) || [];
-let habits = JSON.parse(localStorage.getItem("habits")) || [];
-let studyHours = parseInt(localStorage.getItem("studyHours")) || 0;
-let screenHours = parseInt(localStorage.getItem("screenHours")) || 0;
-let monthlyGoals = JSON.parse(localStorage.getItem("monthlyGoals")) || [];
-let yearlyGoals = JSON.parse(localStorage.getItem("yearlyGoals")) || [];
-let exams = JSON.parse(localStorage.getItem("exams")) || [];
-
-// ======== UTILITY FUNCTIONS ========
-
-// Format date
+// ---------- DATE & TIME ----------
 function updateDateTime() {
   const now = new Date();
-  const date = now.toLocaleDateString("en-GB");
-  const time = now.toLocaleTimeString("en-GB");
-  dateEl.textContent = date;
-  timeEl.textContent = time;
+  document.getElementById("date").textContent =
+    now.toLocaleDateString("en-GB");
+  document.getElementById("time").textContent =
+    now.toLocaleTimeString("en-GB");
 }
 setInterval(updateDateTime, 1000);
 updateDateTime();
 
-// Save all data
-function saveData() {
-  localStorage.setItem("todos", JSON.stringify(todos));
-  localStorage.setItem("habits", JSON.stringify(habits));
-  localStorage.setItem("studyHours", studyHours);
-  localStorage.setItem("screenHours", screenHours);
-  localStorage.setItem("monthlyGoals", JSON.stringify(monthlyGoals));
-  localStorage.setItem("yearlyGoals", JSON.stringify(yearlyGoals));
-  localStorage.setItem("exams", JSON.stringify(exams));
+// ---------- STORAGE HELPERS ----------
+function load(key, fallback) {
+  return JSON.parse(localStorage.getItem(key)) || fallback;
+}
+function save(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
 }
 
-// ======== RENDER FUNCTIONS ========
+// ---------- TO-DO ----------
+let todos = load("todos", []);
 
 function renderTodos() {
-  todoListEl.innerHTML = "";
-  todos.forEach((item, index) => {
+  const list = document.getElementById("todoList");
+  list.innerHTML = "";
+  todos.forEach((task, i) => {
     const li = document.createElement("li");
-    li.textContent = item;
-    li.classList.add("dashboard-item");
-    li.addEventListener("click", () => {
-      todos.splice(index, 1);
-      saveData();
+    li.textContent = task;
+    li.onclick = () => {
+      todos.splice(i, 1);
+      save("todos", todos);
       renderTodos();
-    });
-    todoListEl.appendChild(li);
+    };
+    list.appendChild(li);
   });
 }
+
+function addTodo() {
+  const input = document.getElementById("todoInput");
+  if (!input.value.trim()) return;
+  todos.push(input.value.trim());
+  input.value = "";
+  save("todos", todos);
+  renderTodos();
+}
+
+renderTodos();
+
+// ---------- HABITS ----------
+let habits = load("habits", []);
 
 function renderHabits() {
-  habitListEl.innerHTML = "";
-  habits.forEach((item, index) => {
+  const list = document.getElementById("habitList");
+  list.innerHTML = "";
+  habits.forEach((habit, i) => {
     const li = document.createElement("li");
-    li.textContent = item;
-    li.classList.add("dashboard-item");
-    li.addEventListener("click", () => {
-      habits.splice(index, 1);
-      saveData();
+    li.textContent = habit;
+    li.onclick = () => {
+      habits.splice(i, 1);
+      save("habits", habits);
       renderHabits();
-    });
-    habitListEl.appendChild(li);
+    };
+    list.appendChild(li);
   });
 }
 
-function renderStudy() {
-  studyCountEl.textContent = `${studyHours} / 24 hrs`;
+function addHabit() {
+  const input = document.getElementById("habitInput");
+  if (!input.value.trim()) return;
+  habits.push(input.value.trim());
+  input.value = "";
+  save("habits", habits);
+  renderHabits();
 }
 
-function renderScreen() {
-  screenCountEl.textContent = `${screenHours} / 24 hrs`;
+renderHabits();
+
+// ---------- STUDY ----------
+let studyHours = load("studyHours", 0);
+
+function addStudy() {
+  if (studyHours < 24) studyHours++;
+  save("studyHours", studyHours);
+  updateStudy();
 }
 
-function renderMonthlyGoals() {
-  monthlyListEl.innerHTML = "";
-  monthlyGoals.forEach((item, index) => {
+function updateStudy() {
+  document.getElementById("studyCount").textContent =
+    `${studyHours} / 24 hrs`;
+  document.getElementById("studyValue").textContent =
+    `${studyHours} / 24 hrs`;
+  document.getElementById("studyBar").style.width =
+    `${(studyHours / 24) * 100}%`;
+}
+
+updateStudy();
+
+// ---------- SCREEN ----------
+let screenHours = load("screenHours", 0);
+
+function addScreen() {
+  if (screenHours < 24) screenHours++;
+  save("screenHours", screenHours);
+  updateScreen();
+}
+
+function updateScreen() {
+  document.getElementById("screenCount").textContent =
+    `${screenHours} / 24 hrs`;
+  document.getElementById("screenValue").textContent =
+    `${screenHours} / 24 hrs`;
+  document.getElementById("screenBar").style.width =
+    `${(screenHours / 24) * 100}%`;
+}
+
+updateScreen();
+
+// ---------- MONTH / YEAR ----------
+const now = new Date();
+document.getElementById("currentMonth").textContent =
+  now.toLocaleString("default", { month: "long" });
+document.getElementById("currentYear").textContent =
+  now.getFullYear();
+
+// ---------- GOALS ----------
+let monthlyGoals = load("monthlyGoals", []);
+let yearlyGoals = load("yearlyGoals", []);
+
+function renderGoals(list, elementId, key) {
+  const el = document.getElementById(elementId);
+  el.innerHTML = "";
+  list.forEach((goal, i) => {
     const li = document.createElement("li");
-    li.textContent = item;
-    li.classList.add("dashboard-item");
-    li.addEventListener("click", () => {
-      monthlyGoals.splice(index, 1);
-      saveData();
-      renderMonthlyGoals();
-    });
-    monthlyListEl.appendChild(li);
+    li.textContent = goal;
+    li.onclick = () => {
+      list.splice(i, 1);
+      save(key, list);
+      renderGoals(list, elementId, key);
+    };
+    el.appendChild(li);
   });
 }
 
-function renderYearlyGoals() {
-  yearlyListEl.innerHTML = "";
-  yearlyGoals.forEach((item, index) => {
-    const li = document.createElement("li");
-    li.textContent = item;
-    li.classList.add("dashboard-item");
-    li.addEventListener("click", () => {
-      yearlyGoals.splice(index, 1);
-      saveData();
-      renderYearlyGoals();
-    });
-    yearlyListEl.appendChild(li);
-  });
+function addMonthlyGoal() {
+  const input = document.getElementById("monthlyGoalInput");
+  if (!input.value.trim()) return;
+  monthlyGoals.push(input.value.trim());
+  input.value = "";
+  save("monthlyGoals", monthlyGoals);
+  renderGoals(monthlyGoals, "monthlyGoals", "monthlyGoals");
 }
+
+function addYearlyGoal() {
+  const input = document.getElementById("yearlyGoalInput");
+  if (!input.value.trim()) return;
+  yearlyGoals.push(input.value.trim());
+  input.value = "";
+  save("yearlyGoals", yearlyGoals);
+  renderGoals(yearlyGoals, "yearlyGoals", "yearlyGoals");
+}
+
+renderGoals(monthlyGoals, "monthlyGoals", "monthlyGoals");
+renderGoals(yearlyGoals, "yearlyGoals", "yearlyGoals");
+
+// ---------- EXAMS ----------
+let exams = load("exams", []);
 
 function renderExams() {
-  examListEl.innerHTML = "";
-  exams.forEach((item, index) => {
+  const list = document.getElementById("examList");
+  list.innerHTML = "";
+  exams.forEach((exam, i) => {
     const li = document.createElement("li");
-    li.textContent = item;
-    li.classList.add("dashboard-item");
-    li.addEventListener("click", () => {
-      exams.splice(index, 1);
-      saveData();
+    li.textContent = `${exam.name} – ${exam.date}`;
+    li.onclick = () => {
+      exams.splice(i, 1);
+      save("exams", exams);
       renderExams();
-    });
-    examListEl.appendChild(li);
+    };
+    list.appendChild(li);
   });
 }
 
-// ======== EVENT LISTENERS ========
+function addExam() {
+  const name = document.getElementById("examName").value.trim();
+  const date = document.getElementById("examDate").value;
+  if (!name || !date) return;
+  exams.push({ name, date });
+  save("exams", exams);
+  document.getElementById("examName").value = "";
+  document.getElementById("examDate").value = "";
+  renderExams();
+}
 
-// To-Do
-todoAddBtn.addEventListener("click", () => {
-  const value = todoInput.value.trim();
-  if (value) {
-    todos.push(value);
-    todoInput.value = "";
-    saveData();
-    renderTodos();
-  }
-});
-
-// Habits
-habitAddBtn.addEventListener("click", () => {
-  const value = habitInput.value.trim();
-  if (value) {
-    habits.push(value);
-    habitInput.value = "";
-    saveData();
-    renderHabits();
-  }
-});
-
-// Study Hours
-studyAddBtn.addEventListener("click", () => {
-  if (studyHours < 24) studyHours++;
-  saveData();
-  renderStudy();
-});
-
-// Screen Hours
-screenAddBtn.addEventListener("click", () => {
-  if (screenHours < 24) screenHours++;
-  saveData();
-  renderScreen();
-});
-
-// Monthly Goals
-monthlyAddBtn.addEventListener("click", () => {
-  const value = monthlyInput.value.trim();
-  if (value) {
-    monthlyGoals.push(value);
-    monthlyInput.value = "";
-    saveData();
-    renderMonthlyGoals();
-  }
-});
-
-// Yearly Goals
-yearlyAddBtn.addEventListener("click", () => {
-  const value = yearlyInput.value.trim();
-  if (value) {
-    yearlyGoals.push(value);
-    yearlyInput.value = "";
-    saveData();
-    renderYearlyGoals();
-  }
-});
-
-// Exams
-examAddBtn.addEventListener("click", () => {
-  const value = examInput.value.trim();
-  if (value) {
-    exams.push(value);
-    examInput.value = "";
-    saveData();
-    renderExams();
-  }
-});
-
-// ======== INITIAL RENDER ========
-renderTodos();
-renderHabits();
-renderStudy();
-renderScreen();
-renderMonthlyGoals();
-renderYearlyGoals();
 renderExams();

@@ -1,0 +1,146 @@
+/* ===============================
+   GLOBAL RESET
+================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at top, #141420, #09090f 70%);
+  color: #eaeaf0;
+  min-height: 100vh;
+}
+
+/* ===============================
+   HEADER
+================================ */
+.header {
+  padding: 24px 20px;
+}
+
+.header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #9a8cff;
+}
+
+.header p {
+  color: #a0a0b8;
+  font-size: 0.95rem;
+  margin-top: 4px;
+}
+
+.date-time {
+  margin-top: 10px;
+  color: #8b8ba8;
+  font-size: 0.85rem;
+}
+
+/* ===============================
+   NAVIGATION
+================================ */
+nav {
+  display: flex;
+  gap: 18px;
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+nav a {
+  text-decoration: none;
+  color: #b4b4d6;
+  font-size: 0.9rem;
+  position: relative;
+}
+
+nav a:hover {
+  color: #9a8cff;
+}
+
+/* ===============================
+   MAIN LAYOUT
+================================ */
+main {
+  padding: 20px;
+  display: grid;
+  gap: 20px;
+}
+
+/* ===============================
+   CARD SYSTEM
+================================ */
+.section {
+  background: rgba(255,255,255,0.03);
+  border-radius: 16px;
+  padding: 18px;
+  border: 1px solid rgba(255,255,255,0.05);
+  backdrop-filter: blur(6px);
+}
+
+.section h2 {
+  font-size: 1.2rem;
+  margin-bottom: 14px;
+}
+
+/* ===============================
+   INPUTS & BUTTONS
+================================ */
+input, select {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #fff;
+  padding: 12px;
+  border-radius: 12px;
+  outline: none;
+}
+
+button {
+  background: linear-gradient(135deg, #7f73ff, #9a8cff);
+  border: none;
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+/* ===============================
+   ROWS
+================================ */
+.row {
+  display: flex;
+  gap: 12px;
+}
+
+/* ===============================
+   STUDY & SCREEN TRACKERS
+================================ */
+.counter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.counter span {
+  font-size: 0.85rem;
+  color: #b8b8d8;
+}
+
+/* ===============================
+   FOOTER
+================================ */
+footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 0.75rem;
+  color: #777792;
+}

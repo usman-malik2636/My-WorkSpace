@@ -1,71 +1,83 @@
 :root {
-  --bg-main: #0b0b10;
-  --bg-card: rgba(20, 20, 35, 0.55);
-  --border-soft: rgba(140, 120, 255, 0.18);
-  --glow-soft: rgba(140, 120, 255, 0.35);
-  --purple-main: #8b7cff;
-  --purple-muted: #6d64d8;
-  --text-main: #e6e6f0;
-  --text-muted: #a2a2b8;
+  --bg-main: #0b0b12;
+  --bg-card: rgba(18, 18, 30, 0.55);
+  --border-soft: rgba(150, 130, 255, 0.18);
+  --glow-soft: rgba(150, 130, 255, 0.35);
+
+  --purple-main: #8f7cff;
+  --purple-muted: #6c63ff;
+
+  --text-main: #eaeaf2;
+  --text-muted: #a4a4bc;
+
   --blur-strength: 14px;
 }
 
+/* RESET */
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
+/* BODY */
 body {
-  margin: 0;
-  background: radial-gradient(
-      circle at top,
-      rgba(140,120,255,0.08),
-      transparent 45%
-    ),
+  font-family: "Inter", system-ui, sans-serif;
+  background:
+    radial-gradient(circle at top, rgba(150,130,255,0.10), transparent 40%),
     var(--bg-main);
   color: var(--text-main);
-  font-family: "Inter", system-ui, sans-serif;
   min-height: 100vh;
 }
 
-/* TOP BAR */
-header {
+/* HEADER */
+.header {
   position: sticky;
   top: 0;
   z-index: 10;
-  padding: 20px 28px;
+  padding: 22px 30px;
   background: linear-gradient(
     to bottom,
-    rgba(15, 15, 25, 0.9),
-    rgba(15, 15, 25, 0.65)
+    rgba(12,12,20,0.9),
+    rgba(12,12,20,0.65)
   );
   backdrop-filter: blur(var(--blur-strength));
   border-bottom: 1px solid var(--border-soft);
 }
 
-header h1 {
-  margin: 0;
-  font-size: 1.8rem;
+.header h1 {
+  font-size: 1.9rem;
   font-weight: 500;
   color: var(--purple-main);
+  outline: none;
 }
 
-header p {
-  margin: 4px 0 0;
+.subtitle {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* DATE & TIME */
+.date-time {
+  margin-top: 10px;
+  display: flex;
+  gap: 14px;
   font-size: 0.85rem;
   color: var(--text-muted);
 }
 
-/* MAIN LAYOUT */
+/* MAIN */
 main {
   max-width: 1180px;
-  margin: 0 auto;
-  padding: 36px 26px 120px;
+  margin: auto;
+  padding: 38px 28px 120px;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 34px;
 }
 
-/* GLASS CARD */
+/* SECTION (GLASS CARD) */
 .section {
   background: var(--bg-card);
   border: 1px solid var(--border-soft);
@@ -74,79 +86,95 @@ main {
   backdrop-filter: blur(var(--blur-strength));
   box-shadow:
     0 0 0 1px rgba(255,255,255,0.02),
-    0 12px 40px rgba(0,0,0,0.5),
-    0 0 28px rgba(140,120,255,0.08);
+    0 12px 40px rgba(0,0,0,0.6),
+    0 0 26px rgba(150,130,255,0.08);
 }
 
 .section h2 {
-  margin: 0 0 14px;
   font-size: 1.15rem;
   font-weight: 500;
   color: var(--purple-main);
+  margin-bottom: 16px;
 }
 
 /* INPUTS */
-input,
-button {
+input {
   background: rgba(10,10,20,0.6);
   border: 1px solid var(--border-soft);
-  color: var(--text-main);
   border-radius: 10px;
   padding: 10px 14px;
+  color: var(--text-main);
   font-size: 0.9rem;
+  outline: none;
 }
 
+/* BUTTONS */
 button {
+  background: linear-gradient(
+    to right,
+    var(--purple-muted),
+    var(--purple-main)
+  );
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  color: #fff;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.25s ease;
 }
 
 button:hover {
-  box-shadow: 0 0 16px var(--glow-soft);
+  box-shadow: 0 0 18px var(--glow-soft);
   transform: translateY(-1px);
 }
 
 /* LISTS */
 ul {
   list-style: none;
-  padding: 0;
-  margin: 0;
 }
 
 li {
   padding: 10px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
   display: flex;
   align-items: center;
   gap: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
 li:last-child {
   border-bottom: none;
 }
 
+/* CHECKBOX */
+input[type="checkbox"] {
+  accent-color: var(--purple-main);
+  cursor: pointer;
+}
+
 /* FOOTER */
 footer {
   margin-top: 80px;
-  padding: 26px 10px;
+  padding: 30px 10px;
   text-align: center;
   font-size: 0.75rem;
   color: var(--text-muted);
 }
 
 footer img {
-  margin-top: 10px;
+  display: block;
+  margin: 12px auto 0;
   max-width: 90px;
   opacity: 0.8;
 }
 
 /* RESPONSIVE */
-@media (max-width: 700px) {
+@media (max-width: 768px) {
   main {
-    padding: 26px 18px 100px;
+    padding: 28px 18px 100px;
   }
 
-  header h1 {
-    font-size: 1.5rem;
+  .header h1 {
+    font-size: 1.6rem;
   }
 }
